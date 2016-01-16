@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/plantillas/plantillaGlobal.xhtml">
+
+        <ui:define name="tituloPagina">
+            Gestión de Médicos
+        </ui:define>
+
+        <ui:define name="izquierda">
+            <ui:include src="/medico/plantillas/menuMedico.xhtml"/>              
+        </ui:define>
+
+        <ui:define name="contenido">
+
+                <p:growl id="mensajes" life="3000" />
+
+                <h:form id="formularioListado">     
+                    <p:panel>
+                        <div>
+                            <h:outputLabel value="Paciente:" for="paciente" style="padding-right: 10px; font-weight: bold;"/>
+                            <h:outputLabel id="paciente"  styleClass="inputsPrescripcion" style="font-weight:bold;" value="#{medicoControlador.tratamientoActual.paciente.apellidos}, #{medicoControlador.tratamientoActual.paciente.nombre}" />  
+                        </div>
+                        <div style="margin-top:15px">
+                            <h:outputLabel value="Comentarios:" for="comentarios"  style="padding-right: 25px"/>
+                            <h:inputTextarea id="comentarios" cols="60" rows="8" styleClass="inputsPrescripcion" required="true" value="#{medicoControlador.tratamientoActual.comentarios}"/>
+                        </div>
+                        <div style="margin-top:20px">
+                            <h:outputLabel value="Fecha de inicio:" for="fechaInicio"/>
+                            <p:calendar id="fechaInicio"  styleClass="inputsPrescripcion" style="padding-left: 10px" required="true" value="#{medicoControlador.tratamientoActual.fechaInicio}" disabled="true"/>
+                        </div>
+                        <div style="margin-top:10px; margin-bottom:10px;">
+                            <h:outputLabel value="Fecha de fin:" for="fechaFin"/>
+                            <p:calendar id="fechaFin"  styleClass="inputsPrescripcion" style="padding-left: 25px" required="true" value="#{medicoControlador.tratamientoActual.fechaFin}"/>
+                        </div>
+                        
+                        <p:commandButton value="Corregir" actionListener="#{medicoControlador.doEditarTratamiento(medicoControlador.citaActual.fecha, medicoControlador.citaActual.medico, medicoControlador.citaActual.paciente)}"
+                                         update=":formMedicamentos:medicamentosPanel" oncomplete="PF('DialogoConfirmarOperacion').show()" disabled="#{medicoControlador.tratamientoActual.comentarios == null}"/>
+                        
+                    </p:panel>
+                </h:form>
+                
+                <h:form id="formMedicamentos">
+                    <p:panel id="medicamentosPanel">
+                        
+                        <div style="margin-top:10px;">
+                        
+                     
+                        
+                        <p:dataTable id="tablaListado"
+                                     value="#{medicoControlador.buscarPrescripcionesTratamiento()}"
+                                     var="prescripcion"
+                                     selection="#{medicoControlador.prescripcionActual}"
+                                     selectionMode="single"
+                                     paginator="true" paginatorPosition="bottom" rows="10"
+                                     rowKey="#{prescripcion.id}"
+                                     style="margin-top:20px;" >
+                            
+                            <p:ajax event="rowSelect" update="botonVer botonEditar botonBorrar"/>
+                             
+                            <f:facet name="header">
+                                <h:outputText value="Medicamentos prescritos"/>
+                            </f:facet>  
+                            
+                            <p:column headerText="Medicamento">
+                                <p:outputLabel value="#{prescripcion.medicamento.nombre}, #{prescripcion.medicamento.familia}" />
+                            </p:column>                                                       
+                            
+                            <p:column headerText="Dosis">
+                                <p:outputLabel value="#{prescripcion.dosis}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Indicaciones:">
+                                <p:outputLabel value="#{prescripcion.indicaciones}"/>
+                            </p:column>
+                            
+                            <f:facet name="footer">
+                                <p:commandButton id="botonNuevo"  icon="ui-icon-plus"   value="Nuevo" actionListener="#{medicoControlador.doNuevaPrescripcion()}" update=":formularioNuevoMedicamento" oncomplete="PF('DialogoNuevoMedicamento').show()" disabled="#{medicoControlador.tratamientoActual.comentarios == null}"/>
+                                <p:commandButton id="botonVer"    icon="ui-icon-search" value="Ver"  disabled="#{medicoControlador.tratamientoActual.comentarios == null}" oncomplete="PF('DialogoVerMedicamento').show()" update=":formularioVerMedicamento"/>
+                                <p:commandButton id="botonEditar" icon="ui-icon-pencil" value="Editar" disabled="#{medicoControlador.tratamientoActual.comentarios == null}" oncomplete="PF('DialogoEditarMedicamento').show()" update=":formularioEditarMedicamento"/>
+                                <p:commandButton id="botonBorrar" icon="ui-icon-trash"  value="Borrar" actionListener="#{medicoControlador.doEliminarPrescripcion()}" update=":formMedicamentos:medicamentosPanel" disabled="#{medicoControlador.tratamientoActual.comentarios == null}"/>
+                            </f:facet>
+                        </p:dataTable>
+                        </div>
+                    </p:panel>
+                     
+                </h:form>
+                
+                <h:form id="formSalirFinalizar">
+                    <p:panel>
+                        
+                        <div style="margin-top:15px;">
+                            <p:commandButton id="botonFinalizar"  value="Guardar y salir" action="listadoTratamientos?faces-redirect=true" disabled="#{medicoControlador.tratamientoActual.comentarios == null}"/>
+                        </div>
+                            
+                    </p:panel>
+                </h:form>
+                
+                
+                <ui:include src="fragmentoDialogoNuevoMedicamento.xhtml"/>
+                <ui:include src="fragmentoDialogoVerMedicamento.xhtml"/>
+                <ui:include src="fragmentoDialogoEditarMedicamento.xhtml"/>
+                <ui:include src="fragmentoDialogoConfirmarOperacion.xhtml"/>
+                
+            </ui:define>
+        
+    </ui:composition>
+    
+</html>
+

@@ -6,9 +6,7 @@ package es.uvigo.esei.dagss.controladores.administrador;
 import es.uvigo.esei.dagss.dominio.daos.CitaDAO;
 import es.uvigo.esei.dagss.dominio.daos.MedicoDAO;
 import es.uvigo.esei.dagss.dominio.daos.PacienteDAO;
-import es.uvigo.esei.dagss.dominio.entidades.CentroSalud;
 import es.uvigo.esei.dagss.dominio.entidades.Cita;
-import es.uvigo.esei.dagss.dominio.entidades.Direccion;
 import es.uvigo.esei.dagss.dominio.entidades.EstadoCita;
 import es.uvigo.esei.dagss.dominio.entidades.Medico;
 import es.uvigo.esei.dagss.dominio.entidades.Paciente;
@@ -34,6 +32,7 @@ public class GestionCitasControlador implements Serializable {
 
     @EJB
     MedicoDAO medicoDAO;
+    
     @EJB
     PacienteDAO pacienteDAO;
 
@@ -99,7 +98,6 @@ public class GestionCitasControlador implements Serializable {
         citaActual = citaDAO.crear(citaActual);
         // Actualiza lista de centros de salud a mostrar
         citas = citaDAO.buscarTodos();
-
     }
 
     public void doGuardarEditado() {
@@ -112,5 +110,4 @@ public class GestionCitasControlador implements Serializable {
     public String doVolver() {
         return "../index?faces-redirect=true";
     }
-
 }

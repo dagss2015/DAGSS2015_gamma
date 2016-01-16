@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition>
+
+        <p:dialog id="dialogoVerMedicamento" widgetVar="DialogoVerMedicamento" modal="true" resizable="false" appendTo="@(body)" header="Datos Tratamiento">
+            <h:form id="formularioVerMedicamento">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{medicoControlador.prescripcionActual != null}">
+                        <h:outputLabel value="Nombre:" for="nombre"/>
+                        <h:outputText id="nombre" value="#{medicoControlador.prescripcionActual.medicamento.nombre}"/>
+                        
+                        <h:outputLabel value="Familia:" for="familia"/>
+                        <h:outputText id="familia" value="#{medicoControlador.prescripcionActual.medicamento.familia}"/>
+
+                        <h:outputLabel value="Principio activo:" for="principio"/>
+                        <h:outputText id="principio" value="#{medicoControlador.prescripcionActual.medicamento.principioActivo}"/>
+
+                        <h:outputLabel value="Dosis:" for="dosis"/>
+                        <h:outputText id="dosis" value="#{medicoControlador.prescripcionActual.dosis}"/>
+
+                        <h:outputLabel value="Indicaciones:" for="indicaciones"/>
+                        <h:outputText id="indicaciones" value="#{medicoControlador.prescripcionActual.indicaciones}"/>
+                        
+                        <h:outputLabel value="Fecha de inicio" for="fechaInicio"/>
+                        <h:outputText id="fechaInicio" value="#{medicoControlador.tratamientoActual.fechaInicio}"/>
+                        
+                        <h:outputLabel value="Fecha de fin" for="fechaFin"/>
+                        <h:outputText id="fechaFin" value="#{medicoControlador.tratamientoActual.fechaFin}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="Cerrar" onclick="PF('DialogoVerMedicamento').hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>
+

@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:composition>
+
+        <p:dialog id="dialogoVerReceta" widgetVar="DialogoVerReceta" modal="true" resizable="false" appendTo="@(body)" header="Datos Receta">
+            <h:form id="formularioVerReceta">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{medicoControlador.recetaActual != null}">
+                        <h:outputLabel value="Paciente:" for="paciente"/>
+                        <h:outputText id="paciente" value="#{medicoControlador.recetaActual.prescripcion.tratamiento.paciente.apellidos}, #{medicoControlador.recetaActual.prescripcion.tratamiento.paciente.nombre}"/>
+                        
+                        <h:outputLabel value="Inicio validez" for="fechaInicio"/>
+                        <h:outputText id="fechaInicio" value="#{medicoControlador.recetaActual.inicioValidez}"/>
+                        
+                        <h:outputLabel value="FIn validez" for="fechaFin"/>
+                        <h:outputText id="fechaFin" value="#{medicoControlador.recetaActual.finValidez}"/>
+                        
+                        <h:outputLabel value="Medicamento:" for="medicamento"/>
+                        <h:outputText id="medicamento" value="#{medicoControlador.recetaActual.prescripcion.medicamento.nombre}, #{medicoControlador.recetaActual.prescripcion.medicamento.familia}"/>
+                        
+                        <h:outputLabel value="Cantidad:" for="cantidad"/>
+                        <h:outputText id="cantidad" value="#{medicoControlador.recetaActual.cantidad}"/>
+                    
+                        <h:outputLabel value="Indicaciones:" for="indicaciones"/>
+                        <h:outputText id="indicaciones" value="#{medicoControlador.recetaActual.prescripcion.indicaciones}"/>
+                        
+                    </p:panelGrid>
+                    <p:commandButton value="Cerrar" onclick="PF('DialogoVerReceta').hide()" style="margin-top:10px"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>
+

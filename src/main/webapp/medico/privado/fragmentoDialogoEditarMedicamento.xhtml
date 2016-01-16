@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:dialog id="dialogoEditarMedicamento" widgetVar="DialogoEditarMedicamento" modal="true" resizable="false" appendTo="@(body)" header="Editar Tratamiento">
+            <h:form id="formularioEditarMedicamento">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{medicoControlador.prescripcionActual != null}">
+                        <h:outputLabel value="Medicamento:" for="medicamento"/>
+                        <p:selectOneMenu id="medicamento" value="#{medicoControlador.medicamentoActual}"
+                                         converter="omnifaces.SelectItemsConverter">                
+                            <f:selectItems var="itemMedicamento" value="#{gestionMedicamentosControlador.medicamentos}"                                           
+                                           itemValue="#{itemMedicamento}" 
+                                           itemLabel="#{itemMedicamento.nombre}, #{itemMedicamento.familia}" />
+                        </p:selectOneMenu> 
+                        
+                        <h:outputLabel value="Indicaciones:" for="indicaciones"/>
+                        <h:inputTextarea id="indicaciones" cols="60" rows="8" required="true" value="#{medicoControlador.prescripcionActual.indicaciones}"/>
+                        
+                        <h:outputLabel value="Dosis:" for="dosis"/>
+                        <h:inputText id="dosis" required="true" value="#{medicoControlador.prescripcionActual.dosis}"/>
+                    </p:panelGrid>
+                    
+                    <p:commandButton value="Guardar" actionListener="#{medicoControlador.doGuardarPrescripcionEditada()}"  
+                                     update="display,:formMedicamentos:medicamentosPanel" 
+                                     oncomplete="PF('DialogoEditarMedicamento').hide()"/>
+                    <p:commandButton value="Cancelar" onclick="PF('DialogoEditarMedicamento').hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
+

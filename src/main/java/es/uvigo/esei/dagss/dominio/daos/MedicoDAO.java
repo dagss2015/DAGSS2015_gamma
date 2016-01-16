@@ -37,6 +37,4 @@ public class MedicoDAO extends GenericoDAO<Medico> {
         q.setParameter("patron","%"+patron+"%");        
         return q.getResultList();
     }
-
-    // Completar aqui
 }
